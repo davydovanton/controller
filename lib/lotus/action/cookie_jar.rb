@@ -16,6 +16,12 @@ module Lotus
       # @api private
       HTTP_HEADER       = 'HTTP_COOKIE'.freeze
 
+      # The key used by Rack to set the session cookie
+      #
+      # @since x.x.x
+      # @api private
+      RACK_SESSION_KEY   = 'rack.session'.freeze
+
       # The key used by Rack to set the cookies as an Hash in the env
       #
       # @since 0.1.0
@@ -131,6 +137,7 @@ module Lotus
         hash   = env[COOKIE_HASH_KEY] ||= {}
         string = env[HTTP_HEADER]
 
+        return if string && string.include?(RACK_SESSION_KEY)
         return hash if string == env[COOKIE_STRING_KEY]
         # TODO Next Rack 1.7.x ?? version will have ::Rack::Utils.parse_cookies
         # We can then replace the following lines.
